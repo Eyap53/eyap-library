@@ -1,0 +1,22 @@
+{
+  "name": "com.maellacour.eyaplibrary",
+  "version": "1.0.0",
+  "displayName": "",
+  "description": "",
+  "unity": "2022.1",
+  "unityRelease": "0f1",
+  "dependencies": {},
+  "keywords": [
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "license": "All Rights Reserved",
+  "author": {
+    "name": "Mael Lacour",
+    "email": "public.dev@maellacour.com",
+    "url": "https://maellacour.com"
+  }
+}

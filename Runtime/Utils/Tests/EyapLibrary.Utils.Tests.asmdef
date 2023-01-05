@@ -1,0 +1,18 @@
+{
+    "name": "EyapLibrary.Utils.Tests",
+    "rootNamespace": "",
+    "references": [
+        "GUID:49df53f28e5686c4d8024c19fab944e9"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
