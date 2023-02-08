@@ -1,14 +1,10 @@
-namespace EyapLibrary.Utils.RandomPoints
+namespace EyapLibrary.GeometryAndPlacement.RandomPoints
 {
 	using UnityEngine;
 	using System;
 	using System.Collections.Generic;
 
-	/// <summary>
-	/// Class that contains the methods for 3D Poisson Sampling.
-	/// Only the cube is supported as of now.
-	/// </summary>
-	public static class PoissonDisk3D
+	public static class PoissonDisk3DGradient
 	{
 		/// <summary>
 		/// Helper struct to calculate the x and y indices of a sample in the grid
@@ -28,23 +24,46 @@ namespace EyapLibrary.Utils.RandomPoints
 		}
 
 		/// <summary>
-		/// PoissonDisk algorythm in 3D.
+		/// The delegate for the gradient method.
+		/// </summary>
+		/// <param name="position">The position that need to be evaluated.</param>
+		/// <returns>A value between 0f and 1f.</returns>
+		public delegate float Gradient(Vector3 position);
+
+		/// <summary>
+		/// PoissonDisk algorythm in 3D, with a gradient method to make the minimal distance vary.
+		/// Produce nice natural-looking results.
+		/// See : http://devmag.org.za/2009/05/03/poisson-disk-sampling/.
 		/// </summary>
 		/// <param name="cuboidDimensions">The dimensions of the cuboid as a Vector3.</param>
-		/// <param name="samplingRadius">The minimal distance between sampling points.</param>
+		/// <param name="minRadiusMinimal">The minimal distance between sampling points as its minimal (when gradient produce 0f).</param>
+		/// <param name="minRadiusMaximal">The minimal distance between sampling points as its maximal (when gradient produce 1f).</param>
+		/// <param name="gradient">Delegate that takes a position and gives a value that change the minimal distance. The higher the value the higher the minimal distance between points.</param>
 		/// <param name="maxSampleAttempts">The maximum number of attempts for a single sample before marking it inactive.</param>
 		/// <param name="rng">The random object to be used.</param>
 		/// <returns>A list of Vector3 points as a poisson disk in 3D.</returns>
-		static public List<Vector3> GetCuboidSampling(Vector3 cuboidDimensions, float samplingRadius, System.Random rng, int maxSampleAttempts = 30)
+		static public List<Vector3> GetCuboidSampling(Vector3 cuboidDimensions, float minRadiusMinimal, float minRadiusMaximal, Gradient gradient, System.Random rng, int maxSampleAttempts = 30)
 		{
 			// Arguments Verifications
 			if (cuboidDimensions.x <= 0 || cuboidDimensions.y <= 0 || cuboidDimensions.z <= 0)
 			{
 				throw new ArgumentException("The cuboid dimensions need to be strictly positives.", "cuboidDimensions");
 			}
-			if (samplingRadius <= 0)
+			if (minRadiusMinimal <= 0)
 			{
-				throw new ArgumentException("The sampling radius needs to be strictly positive.", "samplingRadius");
+				throw new ArgumentException("The sampling radius needs to be strictly positive.", "minRadiusMinimal");
+			}
+			if (minRadiusMaximal <= 0)
+			{
+				throw new ArgumentException("The sampling radius needs to be strictly positive.", "minRadiusMaximal");
+			}
+			if (minRadiusMinimal == minRadiusMaximal)
+			{
+				throw new ArgumentException("The sampling radius as its maximal needs to be strictly higher that as its minimal. If you don't want to use a gradient, use the PoissonDisk3D class instead.", "minRadiusMaximal");
+			}
+			if (minRadiusMinimal > minRadiusMaximal)
+			{
+				throw new ArgumentException("The sampling radius as its maximal needs to be strictly higher that as its minimal.", "minRadiusMaximal");
 			}
 			if (maxSampleAttempts <= 0)
 			{
@@ -52,10 +71,9 @@ namespace EyapLibrary.Utils.RandomPoints
 			}
 
 			// Implementation
-			float sqrRadius = samplingRadius * samplingRadius;  // radius squared
-			float doubledRadius = 2 * samplingRadius;  // radius doubled
-			float cellSize = samplingRadius / Mathf.Sqrt(3);
-			Vector3[,,] grid = new Vector3[Mathf.CeilToInt(cuboidDimensions.x / cellSize),
+			float gradientCoefficient = minRadiusMaximal - minRadiusMinimal;
+			float cellSize = minRadiusMaximal / Mathf.Sqrt(3);
+			List<Vector3>[,,] grid = new List<Vector3>[Mathf.CeilToInt(cuboidDimensions.x / cellSize),
 							   Mathf.CeilToInt(cuboidDimensions.y / cellSize),
 							   Mathf.CeilToInt(cuboidDimensions.z / cellSize)];
 			Vector3 candidate;
@@ -72,7 +90,7 @@ namespace EyapLibrary.Utils.RandomPoints
 				activeSamples.Add(candidate);
 				finalList.Add(candidate);
 				GridPos pos = new GridPos(candidate, cuboidDimensions, cellSize);
-				grid[pos.x, pos.y, pos.z] = candidate;
+				grid[pos.x, pos.y, pos.z] = new List<Vector3> { candidate };
 			}
 
 			while (activeSamples.Count > 0)
@@ -80,13 +98,15 @@ namespace EyapLibrary.Utils.RandomPoints
 				// Pick a random active sample
 				int randomActiveIndex = UnityEngine.Random.Range(0, activeSamples.Count);
 				Vector3 sample = activeSamples[randomActiveIndex];
+				float currentRadius = minRadiusMinimal + gradient(sample) * gradientCoefficient;
+				float sqrRadius = currentRadius * currentRadius;  // radius squared
 
 				attemptIndex = 0;
 				found = false;
 				do
 				{
 					attemptIndex++;
-					candidate = sample + UniformRandomPoint.GetInHoledSphereByDiscarding(samplingRadius, doubledRadius, rng); // Generate random point around sample.
+					candidate = sample + UniformRandomPoint.GetInHoledSphereByDiscarding(currentRadius, 2 * currentRadius, rng); // Generate random point around sample.
 
 					found = IsInsideCuboid(candidate, cuboidDimensions) &&
 							IsFarEnough(candidate, grid, cuboidDimensions, cellSize, sqrRadius);
@@ -97,7 +117,14 @@ namespace EyapLibrary.Utils.RandomPoints
 					activeSamples.Add(candidate);
 					finalList.Add(candidate);
 					GridPos pos = new GridPos(candidate, cuboidDimensions, cellSize);
-					grid[pos.x, pos.y, pos.z] = candidate;
+					if (grid[pos.x, pos.y, pos.z] != null)
+					{
+						grid[pos.x, pos.y, pos.z].Add(candidate);
+					}
+					else
+					{
+						grid[pos.x, pos.y, pos.z] = new List<Vector3> { candidate };
+					}
 				}
 				else
 				{
@@ -108,7 +135,7 @@ namespace EyapLibrary.Utils.RandomPoints
 			return finalList;
 		}
 
-		static private bool IsFarEnough(Vector3 sample, Vector3[,,] grid, Vector3 cuboidDimensions, float cellSize, float radius2)
+		static private bool IsFarEnough(Vector3 sample, List<Vector3>[,,] grid, Vector3 cuboidDimensions, float cellSize, float radius2)
 		{
 			GridPos pos = new GridPos(sample, cuboidDimensions, cellSize);
 
@@ -125,12 +152,17 @@ namespace EyapLibrary.Utils.RandomPoints
 				{
 					for (int x = xmin; x <= xmax; x++)
 					{
-						Vector3 s = grid[x, y, z];
-						if (s != Vector3.zero)
+						List<Vector3> samplesInCell = grid[x, y, z];
+						if (samplesInCell != null && samplesInCell.Count > 0)
 						{
-							Vector3 d = s - sample;
-							if (d.sqrMagnitude < radius2)
-								return false;
+							foreach (Vector3 s in samplesInCell)
+							{
+								Vector3 d = s - sample;
+								if (d.sqrMagnitude < radius2)
+								{
+									return false;
+								}
+							}
 						}
 					}
 				}

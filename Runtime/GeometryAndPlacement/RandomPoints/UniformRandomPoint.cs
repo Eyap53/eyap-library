@@ -1,4 +1,4 @@
-namespace EyapLibrary.Utils.RandomPoints
+namespace EyapLibrary.GeometryAndPlacement.RandomPoints
 {
 	using UnityEngine;
 	using System;
