@@ -35,17 +35,17 @@ namespace EyapLibrary.FilesManagement.Tests
 			FileInfo expectedFile = new FileInfo(TestFilePath2);
 
 			// Act
-			string actualFile = FileUtility.GetLatestFileMatchingPattern(TestDirectoryPath, "*.txt");
+			var actualFile = FileUtility.GetLatestFileMatchingPattern(TestDirectoryPath, "*.txt");
 
 			// Assert
-			Assert.AreEqual(expectedFile.FullName, actualFile);
+			Assert.AreEqual(expectedFile.FullName, actualFile.FullName);
 		}
 
 		[Test]
 		public void GetLatestFileMatchingPattern_NoMatchingFiles_ReturnsNull()
 		{
 			// Act
-			string actualFile = FileUtility.GetLatestFileMatchingPattern(TestDirectoryPath, "*.png");
+			var actualFile = FileUtility.GetLatestFileMatchingPattern(TestDirectoryPath, "*.png");
 
 			// Assert
 			Assert.IsNull(actualFile);

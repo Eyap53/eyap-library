@@ -5,12 +5,12 @@ namespace EyapLibrary.FilesManagement
 
 	public static class FileUtility
 	{
-		public static string GetLatestFileMatchingPattern(string directoryPath, string pattern)
+		public static FileInfo GetLatestFileMatchingPattern(string directoryPath, string pattern)
 		{
 			var directory = new DirectoryInfo(directoryPath);
 			var files = directory.GetFiles(pattern)
 							 .OrderByDescending(f => f.LastWriteTimeUtc);
-			return files.FirstOrDefault()?.FullName;
+			return files.FirstOrDefault();
 		}
 	}
 }
