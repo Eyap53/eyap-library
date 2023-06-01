@@ -5,7 +5,6 @@ namespace EyapLibrary.Extensions
 
 	public static class GameObjectExtensions
 	{
-
 		/// <summary>
 		/// Calls GameObject.Destroy on all children of transform.
 		/// </summary>
