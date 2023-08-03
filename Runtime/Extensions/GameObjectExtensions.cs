@@ -28,6 +28,28 @@ namespace EyapLibrary.Extensions
 		}
 
 		/// <summary>
+		/// Calls GameObject.Destroy on all children of transform.
+		/// </summary>
+		/// <param name="transform"></param>
+		/// <param name="detachChildren">If true, immediately detaches the children
+		/// from transform so after this call tranform.childCount is zero</param>
+		public static void DestroyImmediateChildren(this Transform transform, bool detachChildren = true)
+		{
+			int childCount = transform.childCount;
+			if (childCount > 0)
+			{
+				for (int i = childCount - 1; i >= 0; --i)
+				{
+					GameObject.DestroyImmediate(transform.GetChild(i).gameObject);
+				}
+				if (detachChildren)
+				{
+					transform.DetachChildren();
+				}
+			}
+		}
+
+		/// <summary>
 		/// Sets the layer for this game object and all its children
 		/// </summary>
 		public static void SetLayerRecursively(this GameObject gameObject, int layer)
