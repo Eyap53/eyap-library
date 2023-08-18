@@ -68,7 +68,7 @@ namespace EyapLibrary.GeometryAndPlacement.RandomPoints
 			bool found = false;
 
 			{ // First sample is choosen randomly inside the cube
-				candidate = UniformRandomPoint.GetInCuboid(cuboidDimensions, rng);
+				candidate = UniformRandomPoint3D.GetInCuboid(cuboidDimensions, rng);
 				activeSamples.Add(candidate);
 				finalList.Add(candidate);
 				GridPos pos = new GridPos(candidate, cuboidDimensions, cellSize);
@@ -86,7 +86,7 @@ namespace EyapLibrary.GeometryAndPlacement.RandomPoints
 				do
 				{
 					attemptIndex++;
-					candidate = sample + UniformRandomPoint.GetInHoledSphereByDiscarding(samplingRadius, doubledRadius, rng); // Generate random point around sample.
+					candidate = sample + UniformRandomPoint3D.GetInSphericalShell(samplingRadius, doubledRadius, rng); // Generate random point around sample.
 
 					found = IsInsideCuboid(candidate, cuboidDimensions) &&
 							IsFarEnough(candidate, grid, cuboidDimensions, cellSize, sqrRadius);

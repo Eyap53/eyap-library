@@ -1,7 +1,8 @@
 namespace EyapLibrary.GeometryAndPlacement.RandomPoints
 {
-	using UnityEngine;
 	using System;
+	using UnityEngine;
+	using Random = UnityEngine.Random;
 
 	/// <summary>
 	/// Utils class to get a random point inside a 2D shape.

@@ -1,11 +1,4 @@
-# EyapLibrary
+# Unity Eyap Library
 
-A library for developing Unity application in C#.
+My library for my unity projects.
 
-## Adding the Package
-
-This package can easily be added to Unity via git url with `https://gitlab.com/Eyap/eyaplibrary.git`.
-
-## License
-
-All the files in this package are released under the MPL-2.0 License, see [LICENSE](./LICENSE.md).
