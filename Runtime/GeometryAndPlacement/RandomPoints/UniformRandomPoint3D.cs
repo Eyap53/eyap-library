@@ -4,13 +4,13 @@ namespace EyapLibrary.GeometryAndPlacement.RandomPoints
 	using System;
 
 	/// <summary>
-	/// Utils class to get a random point inside a shape.
+	/// Utils class to get a random point inside a 3D shape.
 	/// Currently supported shapes :
 	/// Cube / Cuboid
 	/// Sphere
-	/// Sphere with a hole inside
+	/// Spherical shell (Sphere with a hole inside)
 	/// </summary>
-	public static class UniformRandomPoint
+	public static class UniformRandomPoint3D
 	{
 		/// <summary>
 		/// Get a uniform-random point inside the cuboid shape.
@@ -129,32 +129,32 @@ namespace EyapLibrary.GeometryAndPlacement.RandomPoints
 		}
 
 		/// <summary>
-		/// Get a uniform-random point inside the sphere shape.
+		/// Get a uniform-random point inside the spherical shell (holed sphere) shape.
 		/// </summary>
-		/// <param name="holeRadius">The radius of the hole.</param>
+		/// <param name="internalRadius">The radius of the hole.</param>
 		/// <param name="externalRadius">The radius of the sphere.</param>
 		/// <param name="rng">The random object to be used.</param>
 		/// <returns>A random point inside the shape.</returns>
-		public static Vector3 GetInHoledSphere(float holeRadius, float externalRadius, System.Random rng)
+		public static Vector3 GetInSphericalShell(float internalRadius, float externalRadius, System.Random rng)
 		{
 			// Arguments Verifications
 			if (externalRadius <= 0)
 			{
 				throw new ArgumentException("The external radius needs to be strictly positive.", "externalRadius");
 			}
-			if (holeRadius <= 0)
+			if (internalRadius <= 0)
 			{
-				throw new ArgumentException("The hole radius needs to be strictly positive.", "holeRadius");
+				throw new ArgumentException("The internal radius needs to be strictly positive.", "internal");
 			}
-			if (holeRadius >= externalRadius)
+			if (internalRadius >= externalRadius)
 			{
-				throw new ArgumentException("The hole radius needs to be strictly greater than the external radius.", "holeRadius");
+				throw new ArgumentException("The internal radius needs to be strictly greater than the external radius.", "internal");
 			}
 
 			// Implementation
 			const int maxTryCount = 100;
 			int tryIndex = 0;
-			float minRandomValue = Mathf.Pow(holeRadius / externalRadius, 3);
+			float minRandomValue = Mathf.Pow(internalRadius / externalRadius, 3);
 			float randomValue;
 			do
 			{
@@ -178,31 +178,31 @@ namespace EyapLibrary.GeometryAndPlacement.RandomPoints
 		}
 
 		/// <summary>
-		/// Get a uniform-random point inside the sphere shape.
+		/// Get a uniform-random point inside the spherical shell (holed sphere) shape.
 		/// </summary>
-		/// <param name="holeRadius">The radius of the hole.</param>
+		/// <param name="internalRadius">The radius of the hole.</param>
 		/// <param name="externalRadius">The radius of the sphere.</param>
 		/// <param name="rng">The random object to be used.</param>
 		/// <returns>A random point inside the shape.</returns>
-		public static Vector3 GetInHoledSphereByDiscarding(float holeRadius, float externalRadius, System.Random rng)
+		public static Vector3 GetInSphericalShellByDiscarding(float internalRadius, float externalRadius, System.Random rng)
 		{
 			// Arguments Verifications
 			if (externalRadius <= 0)
 			{
 				throw new ArgumentException("The external radius needs to be strictly positive.", "externalRadius");
 			}
-			if (holeRadius <= 0)
+			if (internalRadius <= 0)
 			{
-				throw new ArgumentException("The hole radius needs to be strictly positive.", "holeRadius");
+				throw new ArgumentException("The internal radius needs to be strictly positive.", "internal");
 			}
-			if (holeRadius >= externalRadius)
+			if (internalRadius >= externalRadius)
 			{
-				throw new ArgumentException("The hole radius needs to be strictly greater than the external radius.", "holeRadius");
+				throw new ArgumentException("The internal radius needs to be strictly greater than the external radius.", "internal");
 			}
 
 			// Implementation
 			float sqrExternalRadius = externalRadius * externalRadius;
-			float sqrHoleRadius = holeRadius * holeRadius;
+			float sqrInternalRadius = internalRadius * internalRadius;
 			const int maxTryCount = 100;
 			int tryIndex = 0;
 			Vector3 point;
@@ -212,8 +212,8 @@ namespace EyapLibrary.GeometryAndPlacement.RandomPoints
 				tryIndex++;
 				point = GetInCuboid(externalRadius, externalRadius, externalRadius, rng);
 				sqrMagnitude = point.sqrMagnitude;
-			} while (sqrMagnitude > sqrExternalRadius && sqrMagnitude < sqrHoleRadius && tryIndex < maxTryCount);
-			if (tryIndex >= maxTryCount && sqrMagnitude > sqrExternalRadius && sqrMagnitude < sqrHoleRadius)
+			} while (sqrMagnitude > sqrExternalRadius && sqrMagnitude < sqrInternalRadius && tryIndex < maxTryCount);
+			if (tryIndex >= maxTryCount && sqrMagnitude > sqrExternalRadius && sqrMagnitude < sqrInternalRadius)
 			{
 				throw new Exception("Can't find an acceptable random point.");
 			}
