@@ -6,11 +6,12 @@ namespace EyapLibrary.GeometryAndPlacement
 	public static class CircleHelper
 	{
 		/// <summary>
-		/// 
+		/// Get evenly spaced points along a circle.
 		/// </summary>
 		/// <param name="radius">The radius of the circle.</param>
 		/// <param name="totalPoints">Should be more or equal than 2.</param>
-		/// <param name="firstPointAngle">The optional angle of the first point, in rad.</param>
+		/// <param name="firstPointAngle">The optional angle of the first point, in rad.
+		/// If 0 (default), first point is at (radius,0)</param>
 		/// <returns>An array of Vector2 representing the point coordinates.</returns>
 		public static Vector2[] GetEvenlySpaced(int totalPoints, float radius = 1f, float firstPointAngle = 0f)
 		{
