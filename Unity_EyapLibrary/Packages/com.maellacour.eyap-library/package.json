@@ -1,19 +1,22 @@
 {
   "name": "com.maellacour.eyaplibrary",
   "version": "1.0.0",
-  "displayName": "",
-  "description": "",
+  "displayName": "Eyap Library",
+  "description": "My library of common tools and methods for my unity projects.",
   "unity": "2022.1",
   "unityRelease": "0f1",
-  "dependencies": {},
+  "dependencies": {
+    "com.unity-atoms.unity-atoms-base-atoms": "4.4.8"
+  },
   "keywords": [
-    "",
-    "",
-    "",
+    "Unity",
+    "Library",
+    "Random",
     "",
     ""
   ],
-  "license": "All Rights Reserved",
+  "license": "MPL-2.0",
+  "licensesUrl": "https://mozilla.org/MPL/2.0/",
   "author": {
     "name": "Mael Lacour",
     "email": "public.dev@maellacour.com",
