@@ -6,3 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.0] - 2023-01-05
 First release of the package.
+Contains common methods, helpers and classes to create application with Unity.
+Some mentions :
+- Helpers for the Atom package.
+- Extensions for string, enumerable, monobehaviour
+- Random point picker points inside a shape (2D or 3D)
+- Maths utils
