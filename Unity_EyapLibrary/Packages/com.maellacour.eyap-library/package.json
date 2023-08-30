@@ -6,7 +6,8 @@
   "unity": "2022.1",
   "unityRelease": "0f1",
   "dependencies": {
-    "com.unity-atoms.unity-atoms-base-atoms": "4.4.8"
+    "com.unity-atoms.unity-atoms-base-atoms": "4.4.8",
+    "com.unity.localization": "1.3.2"
   },
   "keywords": [
     "Unity",
