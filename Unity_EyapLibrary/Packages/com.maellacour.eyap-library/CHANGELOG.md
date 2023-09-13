@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 ### Added
 - Editor: Method to export all localization files as csv. Infortunately, that add the Localization package as dependency.
+- Tests: Tests for RandomPoints.UniformRandomPoint2D
 
 
 ## [1.0.0] - 2023-01-05
