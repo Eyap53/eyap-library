@@ -12,9 +12,8 @@ namespace EyapLibrary.SceneManagement
 
 		private string _newSceneName;
 
-		protected override void Awake()
+		protected void OnEnable()
 		{
-			base.Awake();
 			CurrentlyLoadedSceneName = SceneManager.GetActiveScene().name;
 		}
 
@@ -29,15 +28,15 @@ namespace EyapLibrary.SceneManagement
 			// Checks
 			if (SceneManager.GetSceneByName(sceneToLoadName) == null)
 			{
-				throw new ArgumentException("AdditionalSceneLoader: No scene with that name.");
+				throw new ArgumentException("SceneSwitcher: No scene with that name.");
 			}
 			if (SceneManager.GetSceneByName(sceneToLoadName).isLoaded)
 			{
-				Debug.LogWarning("AdditionalSceneLoader: Scene already loaded");
+				Debug.LogWarning("SceneSwitcher: Scene already loaded");
 			}
 			if (CurrentlySwitchingScene)
 			{
-				Debug.LogWarning("AdditionalSceneLoader: Already switching scene");
+				Debug.LogWarning("SceneSwitcher: Already switching scene");
 				return false;
 			}
 
