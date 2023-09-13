@@ -11,21 +11,23 @@ namespace EyapLibrary.GeometryAndPlacement.RandomPoints
 	/// </summary>
 	public static class UniformRandomPoint2D
 	{
-		/// <inheritdoc/>
-		public static Vector2 GetInAnnulus(float internalRadius, float externalRadius) => GetInAnnulusWithRandomValues(internalRadius, externalRadius, Random.value, Random.value);
+		/// <inheritdoc cref="GetInAnnulus(float, float, float, float)"/>
+		public static Vector2 GetInAnnulus(float internalRadius, float externalRadius) => GetInAnnulus(internalRadius, externalRadius, Random.value, Random.value);
 
-		/// <inheritdoc/>
-		public static Vector2 GetInAnnulus(float internalRadius, float externalRadius, System.Random rng) => GetInAnnulusWithRandomValues(internalRadius, externalRadius, (float)rng.NextDouble(), (float)rng.NextDouble());
+		/// <param name="rng">The random number generator to use.</param>
+		/// <inheritdoc cref="GetInAnnulus(float, float, float, float)"/>
+		public static Vector2 GetInAnnulus(float internalRadius, float externalRadius, System.Random rng) => GetInAnnulus(internalRadius, externalRadius, (float)rng.NextDouble(), (float)rng.NextDouble());
 
 		/// <summary>
-		/// Get a uniform-random point inside the cuboid shape.
-		/// The shape is centered on (0, 0, 0)
-		/// Use System.Random.
+		/// Get a uniform-random point inside the annulus (2D) shape.
+		/// The shape is centered on (0, 0).
 		/// </summary>
 		/// <param name="width">The width of the cuboid.</param>
 		/// <param name="length">The length of the cuboid.</param>
+		/// <param name="randomValue1">The first random value to use.</param>
+		/// <param name="randomValue2">The second random value to use.</param>
 		/// <returns>A random point inside the shape.</returns>
-		private static Vector2 GetInAnnulusWithRandomValues(float internalRadius, float externalRadius, float randomValue1, float randomValue2)
+		public static Vector2 GetInAnnulus(float internalRadius, float externalRadius, float randomValue1, float randomValue2)
 		{
 			// Arguments Verifications
 			if (externalRadius <= 0)
