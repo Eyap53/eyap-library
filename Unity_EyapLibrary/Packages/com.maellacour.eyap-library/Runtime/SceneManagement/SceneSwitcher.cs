@@ -7,15 +7,10 @@ namespace EyapLibrary.SceneManagement
 
 	public class SceneSwitcher : Singleton<SceneSwitcher>
 	{
-		public string CurrentlyLoadedSceneName { get; private set; }
+		public SceneSO CurrentlyLoadedScene { get; private set; }
 		public bool CurrentlySwitchingScene { get; private set; } = false;
 
 		private string _newSceneName;
-
-		protected void OnEnable()
-		{
-			CurrentlyLoadedSceneName = SceneManager.GetActiveScene().name;
-		}
 
 		/// <summary>
 		/// Switches the currently loaded scene to the scene with the given name.
@@ -23,28 +18,32 @@ namespace EyapLibrary.SceneManagement
 		/// <param name="sceneToLoadName">The name of the scene to load.</param>
 		/// <returns>True if the scene was switched, false otherwise.</returns>
 		/// <exception cref="ArgumentException">If no scene with that name exists.</exception>
-		public bool SwitchScene(string sceneToLoadName)
+		public bool SwitchScene(SceneSO sceneSO)
 		{
 			// Checks
-			if (SceneManager.GetSceneByName(sceneToLoadName) == null)
+			if (sceneSO == null)
 			{
-				throw new ArgumentException("SceneSwitcher: No scene with that name.");
+				throw new ArgumentException("SceneLoader: No sceneSO provided.");
 			}
-			if (SceneManager.GetSceneByName(sceneToLoadName).isLoaded)
+			if (SceneManager.GetSceneByName(sceneSO.sceneName) == null)
 			{
-				Debug.LogWarning("SceneSwitcher: Scene already loaded");
+				throw new ArgumentException("SceneLoader: No scene with that name.");
 			}
 			if (CurrentlySwitchingScene)
 			{
-				Debug.LogWarning("SceneSwitcher: Already switching scene");
+				Debug.LogWarning("SceneLoader: Scene currently loading");
 				return false;
 			}
 
+			CurrentlyLoadedScene = sceneSO;
 			CurrentlySwitchingScene = true;
-			_newSceneName = sceneToLoadName;
-			SceneManager.UnloadSceneAsync(CurrentlyLoadedSceneName);
-			AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneToLoadName, LoadSceneMode.Additive);
-			asyncOperation.completed += OnSceneSwitch;
+
+
+			SceneLoader.LoadScene(sceneSO.sceneName, () => OnSceneSwitch(sceneSO));
+			foreach (string sceneName in sceneSO.additionnalSceneNames)
+			{
+				SceneLoader.LoadScene(sceneName);
+			}
 			return true;
 		}
 
@@ -52,10 +51,10 @@ namespace EyapLibrary.SceneManagement
 		/// Called when the scene is switched.
 		/// </summary>
 		/// <param name="operation">The async operation that loaded the scene.</param>
-		protected void OnSceneSwitch(AsyncOperation operation)
+		protected void OnSceneSwitch(SceneSO sceneSO)
 		{
 			CurrentlySwitchingScene = false;
-			CurrentlyLoadedSceneName = _newSceneName;
+			CurrentlyLoadedScene = sceneSO;
 			SceneManager.SetActiveScene(SceneManager.GetSceneByName(_newSceneName));
 		}
 	}
