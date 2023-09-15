@@ -1,6 +1,7 @@
 namespace EyapLibrary.SceneManagement
 {
 	using System;
+	using System.Linq;
 	using EyapLibrary.Utils;
 	using UnityEngine;
 	using UnityEngine.SceneManagement;
@@ -34,15 +35,35 @@ namespace EyapLibrary.SceneManagement
 				Debug.LogWarning("SceneLoader: Scene currently loading");
 				return false;
 			}
+			if (CurrentlyLoadedScene == sceneSO)
+			{
+				Debug.LogWarning("SceneLoader: Scene already loaded");
+				return true;
+			}
 
-			CurrentlyLoadedScene = sceneSO;
+
 			CurrentlySwitchingScene = true;
-
 
 			SceneLoader.LoadScene(sceneSO.sceneName, () => OnSceneSwitch(sceneSO));
 			foreach (string sceneName in sceneSO.additionnalSceneNames)
 			{
 				SceneLoader.LoadScene(sceneName);
+			}
+
+			// Unload the previous scene
+			if (CurrentlyLoadedScene != null)
+			{
+				if (!sceneSO.additionnalSceneNames.Contains(CurrentlyLoadedScene.sceneName))
+				{
+					SceneLoader.UnloadScene(CurrentlyLoadedScene.sceneName);
+				}
+				foreach (string oldSceneName in CurrentlyLoadedScene.additionnalSceneNames)
+				{
+					if (oldSceneName != sceneSO.sceneName && !sceneSO.additionnalSceneNames.Contains(oldSceneName))
+					{
+						SceneLoader.UnloadScene(oldSceneName);
+					}
+				}
 			}
 			return true;
 		}
