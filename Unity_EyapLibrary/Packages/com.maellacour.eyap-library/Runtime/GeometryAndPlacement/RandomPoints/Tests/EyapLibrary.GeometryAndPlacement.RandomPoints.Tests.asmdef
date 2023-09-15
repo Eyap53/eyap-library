@@ -1,0 +1,18 @@
+{
+    "name": "EyapLibrary.GeometryAndPlacement.RandomPoints.Tests",
+    "rootNamespace": "",
+    "references": [
+        "GUID:c82c1e15b2244e446917473e949937e3"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
