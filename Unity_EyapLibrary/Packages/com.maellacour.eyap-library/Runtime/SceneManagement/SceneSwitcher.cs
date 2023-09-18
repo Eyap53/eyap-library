@@ -6,7 +6,7 @@ namespace EyapLibrary.SceneManagement
 	using UnityEngine;
 	using UnityEngine.SceneManagement;
 
-	public class SceneSwitcher : Singleton<SceneSwitcher>
+	public class SceneSwitcher : PersistentSingleton<SceneSwitcher>
 	{
 		public SceneSO CurrentlyLoadedScene { get; private set; }
 		public bool CurrentlySwitchingScene { get; private set; } = false;

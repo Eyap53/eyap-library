@@ -10,10 +10,13 @@ namespace EyapLibrary.SceneManagement
 
 	public class InitializationLoader : MonoBehaviour
 	{
-		public SceneSO sceneToLoad;
+		[SerializeField] private string _sceneName = "Initialization";
+		[SerializeField] private SceneSO _sceneToLoad;
+
 		protected void Start()
 		{
-			SceneSwitcher.instance.SwitchScene(sceneToLoad);
+			SceneSwitcher.instance.SwitchScene(_sceneToLoad);
+			SceneLoader.UnloadScene(_sceneName);
 		}
 	}
 }

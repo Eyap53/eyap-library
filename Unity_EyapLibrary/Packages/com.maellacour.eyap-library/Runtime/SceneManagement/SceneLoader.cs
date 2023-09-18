@@ -97,7 +97,13 @@ namespace EyapLibrary.SceneManagement
 			}
 
 			// Implementation
+			Debug.Log(string.Format("SceneLoader: Unloading scene {0}.", sceneName));
 			AsyncOperation async = SceneManager.UnloadSceneAsync(sceneName);
+			if (async == null)
+			{
+				Debug.LogWarning("SceneLoader: Scene not unloaded.");
+				return false;
+			}
 			async.completed += (AsyncOperation a) => OnSceneUnloaded(sceneName);
 			if (sceneUnloadedCallback != null)
 			{
@@ -108,7 +114,7 @@ namespace EyapLibrary.SceneManagement
 
 		protected static void OnSceneUnloaded(string sceneName)
 		{
-
+			Debug.Log(string.Format("SceneLoader: Scene {0} unloaded.", sceneName));
 		}
 	}
 }

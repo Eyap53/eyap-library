@@ -11,7 +11,7 @@ namespace EyapLibrary.SceneManagement
 	/// This class is used by the <see cref="SceneSwitcher"/> class.
 	/// </remarks>
 	/// <seealso cref="SceneSwitcher"/>
-	[CreateAssetMenu(fileName = "SceneToLoad", menuName = "EypaLibrary/SceneToLoad")]
+	[CreateAssetMenu(fileName = "Scene", menuName = "EypaLibrary/Scene SO")]
 	public class SceneSO : ScriptableObject
 	{
 		/// <summary>

@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.dbrizov.naughtyattributes": "2.1.4",
     "com.unity-atoms.unity-atoms-base-atoms": "4.4.8",
     "com.unity.ai.navigation": "1.1.4",
     "com.unity.ide.vscode": "1.2.5",
@@ -49,7 +50,8 @@
       "name": "OpenUPM",
       "url": "https://package.openupm.com",
       "scopes": [
-        "com.unity-atoms"
+        "com.unity-atoms",
+        "com.dbrizov"
       ]
     }
   ]
