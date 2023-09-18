@@ -35,6 +35,6 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           draft: true
-          tag_name: ${{ github.event.inputs.tag }}
+          tag_name: v${{ github.event.inputs.tag }}
           generate_release_notes: true
           body_path: ./Unity_EyapLibrary/Packages/com.maellacour.eyap-library/CHANGELOG.md
