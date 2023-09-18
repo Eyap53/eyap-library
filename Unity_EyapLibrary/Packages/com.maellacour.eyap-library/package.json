@@ -22,5 +22,12 @@
     "name": "Mael Lacour",
     "email": "public.dev@maellacour.com",
     "url": "https://maellacour.com"
-  }
+  },
+  "samples": [
+    {
+      "displayName": "Scene Management Demo",
+      "description": "Contains a demo for the scene management tools.",
+      "path": "Samples~/SceneManagementDemo"
+    }
+  ]
 }

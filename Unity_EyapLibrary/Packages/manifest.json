@@ -49,7 +49,8 @@
       "name": "OpenUPM",
       "url": "https://package.openupm.com",
       "scopes": [
-        "com.unity-atoms"
+        "com.unity-atoms",
+        "com.dbrizov"
       ]
     }
   ]
