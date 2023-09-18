@@ -2,9 +2,16 @@
 name: Create release
 
 on:
-  push:
-    tags:
-      - "v*.*.*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "tag: git tag you want create. (e.g. v1.0.0)"
+        required: true
+      dry-run:
+        description: "dry-run: true will never create relase/nuget."
+        required: true
+        default: false
+        type: boolean
 
 jobs:
   update-packagejson:
