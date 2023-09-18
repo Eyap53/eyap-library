@@ -8,10 +8,11 @@ namespace EyapLibrary.SceneManagement
 
 	public class SceneSwitcher : PersistentSingleton<SceneSwitcher>
 	{
-		public SceneSO CurrentlyLoadedScene { get; private set; }
-		public bool CurrentlySwitchingScene { get; private set; } = false;
+		[Tooltip("Either Initialization, or the current scene for an in-editor cold Startup.")]
+		[SerializeField] private SceneSO currentlyLoadedScene;
 
-		private string _newSceneName;
+		public SceneSO CurrentlyLoadedScene { get => currentlyLoadedScene; private set => currentlyLoadedScene = value; }
+		public bool CurrentlySwitchingScene { get; private set; } = false;
 
 		/// <summary>
 		/// Switches the currently loaded scene to the scene with the given name.
@@ -44,27 +45,12 @@ namespace EyapLibrary.SceneManagement
 
 			CurrentlySwitchingScene = true;
 
-			SceneLoader.LoadScene(sceneSO.sceneName, () => OnSceneSwitch(sceneSO));
+			SceneLoader.LoadScene(sceneSO.sceneName, () => OnMainSceneSwitch(sceneSO));
 			foreach (string sceneName in sceneSO.additionnalSceneNames)
 			{
 				SceneLoader.LoadScene(sceneName);
 			}
 
-			// Unload the previous scene
-			if (CurrentlyLoadedScene != null)
-			{
-				if (!sceneSO.additionnalSceneNames.Contains(CurrentlyLoadedScene.sceneName))
-				{
-					SceneLoader.UnloadScene(CurrentlyLoadedScene.sceneName);
-				}
-				foreach (string oldSceneName in CurrentlyLoadedScene.additionnalSceneNames)
-				{
-					if (oldSceneName != sceneSO.sceneName && !sceneSO.additionnalSceneNames.Contains(oldSceneName))
-					{
-						SceneLoader.UnloadScene(oldSceneName);
-					}
-				}
-			}
 			return true;
 		}
 
@@ -72,11 +58,49 @@ namespace EyapLibrary.SceneManagement
 		/// Called when the scene is switched.
 		/// </summary>
 		/// <param name="operation">The async operation that loaded the scene.</param>
-		protected void OnSceneSwitch(SceneSO sceneSO)
+		protected void OnMainSceneSwitch(SceneSO sceneSO)
+		{
+			SceneSO previousSceneSO = CurrentlyLoadedScene;
+			CurrentlyLoadedScene = sceneSO;
+			SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneSO.sceneName));
+			UnloadPreviouScenes(CurrentlyLoadedScene, previousSceneSO, OnPreviousScenesUnloaded);
+		}
+
+		/// <summary>
+		/// Unloads the previous scenes.
+		/// </summary>
+		/// <param name="previousSceneSO">The sceneSO of the previous scene.</param>
+		/// <exception cref="ArgumentException">If no scene with that name exists.</exception>
+		protected static void UnloadPreviouScenes(SceneSO newSceneSO, SceneSO previousSceneSO, Action sceneUnloadedCallback = null)
+		{
+			if (previousSceneSO == null)
+			{
+				return;
+			}
+			if (SceneManager.GetSceneByName(previousSceneSO.sceneName) == null)
+			{
+				throw new ArgumentException("SceneLoader: No scene with that name.");
+			}
+
+			if (!newSceneSO.additionnalSceneNames.Contains(previousSceneSO.sceneName))
+			{
+				SceneLoader.UnloadScene(previousSceneSO.sceneName, sceneUnloadedCallback);
+			}
+			foreach (string oldSceneName in previousSceneSO.additionnalSceneNames)
+			{
+				if (oldSceneName != newSceneSO.sceneName && !newSceneSO.additionnalSceneNames.Contains(oldSceneName))
+				{
+					SceneLoader.UnloadScene(oldSceneName);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Called when previous scenes unloaded.
+		/// </summary>
+		protected void OnPreviousScenesUnloaded()
 		{
 			CurrentlySwitchingScene = false;
-			CurrentlyLoadedScene = sceneSO;
-			SceneManager.SetActiveScene(SceneManager.GetSceneByName(_newSceneName));
 		}
 	}
 }

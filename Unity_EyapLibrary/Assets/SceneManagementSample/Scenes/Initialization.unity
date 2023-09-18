@@ -152,6 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46831de36c8f3a4198fd2049c54e7e09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentlyLoadedScene: {fileID: 11400000, guid: d10fb91160bf3f147a1c25b24644a269, type: 2}
 --- !u!4 &995566412
 Transform:
   m_ObjectHideFlags: 0
@@ -196,7 +197,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43bf3a70578af0044a7af79dd1c44ea6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sceneName: Initialization
   _sceneToLoad: {fileID: 11400000, guid: 7f68627b5e07ae047a80b8c80f11ce82, type: 2}
 --- !u!4 &2063709689
 Transform:
