@@ -1,0 +1,29 @@
+# Workflow to execute when a new tag is released. Update version and create release
+name: Create release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  update-packagejson:
+    uses: Eyap53/Actions/.github/workflows/update-packagejson.yaml@main
+    with:
+      file-path-package: ./Unity_EyapLibrary/Packages/com.maellacour.eyap-library/package.json
+      file-path-changelog: ./Unity_EyapLibrary/Packages/com.maellacour.eyap-library/CHANGELOG.md
+      tag: ${{ github.ref_name }}
+      dry-run: false
+
+  create_release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          draft: true
+          tag_name: ${{ github.ref_name }}
+          generate_release_notes: true
+          body_path: CHANGELOG.md
