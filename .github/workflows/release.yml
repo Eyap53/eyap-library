@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: "tag: git tag you want create. (e.g. v1.0.0)"
+        description: "tag: git tag you want create. (e.g. 1.0.0)"
         required: true
       dry-run:
         description: "dry-run: true will never create relase/nuget."
@@ -19,18 +19,22 @@ jobs:
     with:
       file-path-package: ./Unity_EyapLibrary/Packages/com.maellacour.eyap-library/package.json
       file-path-changelog: ./Unity_EyapLibrary/Packages/com.maellacour.eyap-library/CHANGELOG.md
-      tag: ${{ github.ref_name }}
-      dry-run: false
+      tag: ${{ github.event.inputs.tag }}
+      dry-run: ${{ fromJson(github.event.inputs.dry-run) }}
 
   create_release:
+    needs: update-packagejson
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.update-packagejson.outputs.sha }}
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           draft: true
-          tag_name: ${{ github.ref_name }}
+          tag_name: ${{ github.event.inputs.tag }}
           generate_release_notes: true
-          body_path: CHANGELOG.md
+          body_path: ./Unity_EyapLibrary/Packages/com.maellacour.eyap-library/CHANGELOG.md
