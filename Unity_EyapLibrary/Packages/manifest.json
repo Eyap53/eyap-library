@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "com.dbrizov.naughtyattributes": "2.1.4",
     "com.unity-atoms.unity-atoms-base-atoms": "4.4.8",
     "com.unity.ai.navigation": "1.1.4",
     "com.unity.ide.vscode": "1.2.5",
