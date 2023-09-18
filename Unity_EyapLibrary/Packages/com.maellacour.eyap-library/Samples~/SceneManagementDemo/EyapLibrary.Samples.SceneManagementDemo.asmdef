@@ -1,0 +1,17 @@
+{
+    "name": "EyapLibrary.Samples.SceneManagementDemo",
+    "rootNamespace": "",
+    "references": [
+        "GUID:0633d4c3b02cd2c4db341f34ccc7de7d",
+        "GUID:49df53f28e5686c4d8024c19fab944e9"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -357,6 +357,14 @@ PrefabInstance:
       propertyPath: m_text
       value: Go to Main
       objectReference: {fileID: 0}
+    - target: {fileID: 4993037297436617204, guid: 0d763cec1abb6774e86a2b3cb960024d, type: 3}
+      propertyPath: _sceneSO
+      value: 
+      objectReference: {fileID: 11400000, guid: 7f68627b5e07ae047a80b8c80f11ce82, type: 2}
+    - target: {fileID: 6124895723013105629, guid: 0d763cec1abb6774e86a2b3cb960024d, type: 3}
+      propertyPath: currentlyLoadedScene
+      value: 
+      objectReference: {fileID: 11400000, guid: 7f68627b5e07ae047a80b8c80f11ce82, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
