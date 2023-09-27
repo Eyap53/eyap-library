@@ -2,6 +2,9 @@ namespace EyapLibrary.SceneManagement
 {
 	using UnityEngine;
 
+	/// <summary>
+	/// Simple class to exit the game, in editor and in play.
+	/// </summary>
 	public class GameExiter : MonoBehaviour
 	{
 		/// <summary>
