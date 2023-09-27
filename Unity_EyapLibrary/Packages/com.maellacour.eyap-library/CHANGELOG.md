@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 ### Added
+- AtomsHelper: Add IntDisplayerInputField.
 - SceneManagement: ColdStartup script, to start scene from the editor.
 - Samples - SceneManagement: Add a new combinations for the scenes & show ColdStartup.
 
