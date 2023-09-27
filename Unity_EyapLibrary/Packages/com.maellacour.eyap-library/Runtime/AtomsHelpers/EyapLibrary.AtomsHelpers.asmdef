@@ -3,7 +3,8 @@
     "rootNamespace": "",
     "references": [
         "UnityAtoms.UnityAtomsBaseAtoms.Runtime",
-        "UnityAtoms.UnityAtomsCore.Runtime"
+        "UnityAtoms.UnityAtomsCore.Runtime",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
