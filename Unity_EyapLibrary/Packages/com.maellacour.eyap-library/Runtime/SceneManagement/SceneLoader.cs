@@ -1,6 +1,5 @@
 namespace EyapLibrary.SceneManagement
 {
-	using EyapLibrary.Utils;
 	using System;
 	using System.Collections.Generic;
 	using UnityEngine;

@@ -1,8 +1,6 @@
 namespace EyapLibrary.SceneManagement
 {
-	using System;
 	using UnityEngine;
-	using UnityEngine.SceneManagement;
 
 	/// <summary>
 	/// Class containing the scene to load information, including the additionnal scene to load.

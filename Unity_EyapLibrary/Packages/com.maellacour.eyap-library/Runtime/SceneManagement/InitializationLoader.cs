@@ -1,7 +1,6 @@
 namespace EyapLibrary.SceneManagement
 {
 	using UnityEngine;
-	using UnityEngine.SceneManagement;
 
 	/// <summary>
 	/// This class is responsible for starting the game by loading the persistent managers scene
