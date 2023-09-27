@@ -35,6 +35,9 @@ namespace EyapLibrary.GeometryAndPlacement.RandomPoints
 		/// <param name="maxSampleAttempts">The maximum number of attempts for a single sample before marking it inactive.</param>
 		/// <param name="rng">The random object to be used.</param>
 		/// <returns>A list of Vector3 points as a poisson disk in 3D.</returns>
+		/// <exception cref="ArgumentException">Thrown when the cuboid dimensions are not strictly positives.</exception>
+		/// <exception cref="ArgumentException">Thrown when the sampling radius is not strictly positive.</exception>
+		/// <exception cref="ArgumentException">Thrown when the maximum sample attempts count is not strictly positive.</exception>
 		static public List<Vector3> GetCuboidSampling(Vector3 cuboidDimensions, float samplingRadius, System.Random rng, int maxSampleAttempts = 30)
 		{
 			// Arguments Verifications

@@ -7,7 +7,8 @@ namespace EyapLibrary.SceneManagement
 	using UnityEngine.SceneManagement;
 
 	/// <summary>
-	/// Allows a "cold start" in the editor, when pressing Play and not passing from the Initialisation scene.
+	/// Script responsible to load the scene in the background.
+	/// It is called from the SceneSwitcher monobehaviour mainly.
 	/// </summary>
 	public class SceneLoader
 	{
