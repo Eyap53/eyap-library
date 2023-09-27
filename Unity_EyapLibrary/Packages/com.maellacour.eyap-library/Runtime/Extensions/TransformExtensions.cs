@@ -1,10 +1,43 @@
 namespace EyapLibrary.Extensions
 {
 	using System;
+	using System.Collections.Generic;
 	using UnityEngine;
 
-	public static class GameObjectExtensions
+	public static class TransformExtensions
 	{
+		/// <summary>
+		/// Calls GameObject.Destroy on all children of transform.
+		/// </summary>
+		/// <param name="transform"></param>
+		public static void DestroyChildren(this Transform transform)
+		{
+			int childCount = transform.childCount;
+			if (childCount > 0)
+			{
+				for (int i = childCount - 1; i >= 0; --i)
+				{
+					GameObject.Destroy(transform.GetChild(i).gameObject);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Calls GameObject.Destroy on all children of transform.
+		/// </summary>
+		/// <param name="transform"></param>
+		public static void DestroyImmediateChildren(this Transform transform)
+		{
+			int childCount = transform.childCount;
+			if (childCount > 0)
+			{
+				for (int i = childCount - 1; i >= 0; --i)
+				{
+					GameObject.DestroyImmediate(transform.GetChild(i).gameObject);
+				}
+			}
+		}
+
 		/// <summary>
 		/// Sets the layer for this game object and all its children
 		/// </summary>

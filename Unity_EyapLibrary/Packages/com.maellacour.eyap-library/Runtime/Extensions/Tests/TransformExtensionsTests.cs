@@ -9,10 +9,10 @@ namespace EyapLibrary.Extensions.Tests
 	/// </summary>
 	/// <seealso cref="GameObject"/>"
 	[TestFixture]
-	public class GameObjectExtensionsTests
+	public class TransformExtensionsTests
 	{
 		/// <summary>
-		/// Tests for <see cref="GameObjectExtensions.DestroyImmediateChildren"/>.
+		/// Tests for <see cref="TransformExtensions.DestroyImmediateChildren"/>.
 		/// </summary>
 		[Test]
 		public void DestroyImmediateChildrenTest()
@@ -24,11 +24,10 @@ namespace EyapLibrary.Extensions.Tests
 			child2.transform.SetParent(gameObject.transform);
 
 			Assert.AreEqual(2, gameObject.transform.childCount);
-			gameObject.transform.DestroyImmediateChildren(true);
+			gameObject.transform.DestroyImmediateChildren();
 			Assert.AreEqual(0, gameObject.transform.childCount);
 			Assert.IsTrue(child1 == null);
 			Assert.IsTrue(child2 == null);
 		}
-
 	}
 }
