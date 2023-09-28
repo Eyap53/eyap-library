@@ -2,7 +2,9 @@
     "name": "EyapLibrary.CommonManagers",
     "rootNamespace": "",
     "references": [
-        "GUID:49df53f28e5686c4d8024c19fab944e9"
+        "GUID:49df53f28e5686c4d8024c19fab944e9",
+        "GUID:29492541a59d04a81b47a7f225e8a22d",
+        "GUID:14165214884ae4a619bfb290f28194a7"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

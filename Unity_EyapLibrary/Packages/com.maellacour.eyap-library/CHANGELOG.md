@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - SceneManagement: Very simple behaviour to change scene.
 
+### Changed
+- CommonManagers: Pause menu is now triggered using a bool event.
+
 
 ## [1.3.2] - 2023-09-27
 ### Fixed
