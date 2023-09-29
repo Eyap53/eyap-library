@@ -41,12 +41,6 @@ namespace EyapLibrary.SceneManagement
 				Debug.LogWarning("SceneLoader: Scene currently loading");
 				return false;
 			}
-			if (CurrentlyLoadedScene == sceneSO)
-			{
-				Debug.LogWarning("SceneLoader: Scene already loaded");
-				return true;
-			}
-
 
 			CurrentlySwitchingScene = true;
 
@@ -59,10 +53,13 @@ namespace EyapLibrary.SceneManagement
 				OnMainSceneSwitch(sceneSO, isColdStartup);
 			}
 
-			// Load additional scenes
+			// Load additional scenes, if not loaded
 			foreach (string sceneName in sceneSO.additionnalSceneNames)
 			{
-				SceneLoader.LoadScene(sceneName);
+				if (!SceneManager.GetSceneByName(sceneName).isLoaded)
+				{
+					SceneLoader.LoadScene(sceneName);
+				}
 			}
 
 			return true;

@@ -28,11 +28,6 @@ namespace EyapLibrary.SceneManagement
 			{
 				throw new ArgumentException("SceneLoader: No scene with that name.");
 			}
-			if (SceneManager.GetSceneByName(sceneName).isLoaded)
-			{
-				Debug.LogWarning("SceneLoader: Scene already loaded");
-				return false;
-			}
 			if (LoadingScenes.Contains(sceneName))
 			{
 				Debug.LogWarning("SceneLoader: Scene currently loading");
