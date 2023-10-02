@@ -24,6 +24,16 @@ namespace EyapLibrary.SceneManagement
 
 		private const string SceneTransitionLabel = "TransitionScene";
 
+		public bool ReloadScene()
+		{
+			if (CurrentlyLoadedScene == null)
+			{
+				throw new Exception("SceneSwitcher: Current scene is null.");
+			}
+			return SwitchScene(CurrentlyLoadedScene);
+		}
+
+
 		/// <summary>
 		/// Switches the currently loaded scene to the scene with the given name.
 		/// </summary>
@@ -36,15 +46,15 @@ namespace EyapLibrary.SceneManagement
 			// Checks
 			if (sceneSO == null)
 			{
-				throw new ArgumentException("SceneLoader: No sceneSO provided.");
+				throw new ArgumentException("SceneSwitcher: No sceneSO provided.");
 			}
 			if (SceneManager.GetSceneByName(sceneSO.sceneName) == null)
 			{
-				throw new ArgumentException("SceneLoader: No scene with that name.");
+				throw new ArgumentException("SceneSwitcher: No scene with that name.");
 			}
 			if (CurrentlySwitchingScene)
 			{
-				Debug.LogWarning("SceneLoader: Scene currently loading");
+				Debug.LogWarning("SceneSwitcher: Scene currently loading");
 				return false;
 			}
 
@@ -95,15 +105,15 @@ namespace EyapLibrary.SceneManagement
 		{
 			if (currentSceneSO == null)
 			{
-				throw new ArgumentException("SceneLoader: Current scene is null.");
+				throw new ArgumentException("SceneSwitcher: Current scene is null.");
 			}
 			if (previousSceneSO == null)
 			{
-				throw new ArgumentException("SceneLoader: Scene to unload is null.");
+				throw new ArgumentException("SceneSwitcher: Scene to unload is null.");
 			}
 			if (SceneManager.GetSceneByName(previousSceneSO.sceneName) == null)
 			{
-				throw new ArgumentException("SceneLoader: No scene with that name.");
+				throw new ArgumentException("SceneSwitcher: No scene with that name.");
 			}
 
 			foreach (string oldSceneName in previousSceneSO.additionnalSceneNames)

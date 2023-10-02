@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+### Added
+- SceneManagement: Add ReloadScene method on the SceneSwitcher script.
+
+
 ## [1.4.2] - 2023-10-02
 ### Fixed
 - SceneManagement: Unload scene first BEFORE loading new scenes. For that, temporarily use empty scene as active.
