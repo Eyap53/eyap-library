@@ -18,6 +18,12 @@ namespace EyapLibrary.SceneManagement
 		public SceneSO CurrentlyLoadedScene { get => currentlyLoadedScene; private set => currentlyLoadedScene = value; }
 		public bool CurrentlySwitchingScene { get; private set; } = false;
 
+		private SceneSO _nextSceneSO;
+		private bool _isColdStartup;
+		private Scene _transitionScene;
+
+		private const string SceneTransitionLabel = "TransitionScene";
+
 		/// <summary>
 		/// Switches the currently loaded scene to the scene with the given name.
 		/// </summary>
@@ -43,15 +49,28 @@ namespace EyapLibrary.SceneManagement
 			}
 
 			CurrentlySwitchingScene = true;
+			_nextSceneSO = sceneSO;
+			_isColdStartup = isColdStartup;
 
-			if (!isColdStartup)
+			if (CurrentlyLoadedScene != null)
 			{
-				SceneLoader.LoadScene(sceneSO.sceneName, () => OnMainSceneSwitch(sceneSO));
+				_transitionScene = SceneManager.CreateScene(SceneTransitionLabel);
+				SceneManager.SetActiveScene(_transitionScene);
+				UnloadPreviouScenes(_nextSceneSO, CurrentlyLoadedScene, OnPreviousScenesUnloaded);
 			}
 			else
 			{
-				OnMainSceneSwitch(sceneSO, isColdStartup);
+				OnPreviousScenesUnloaded();
 			}
+
+			// if (!isColdStartup)
+			// {
+			// 	SceneLoader.LoadScene(sceneSO.sceneName, () => OnMainSceneSwitch(sceneSO));
+			// }
+			// else
+			// {
+			// 	OnMainSceneSwitch(sceneSO, isColdStartup);
+			// }
 
 			// Load additional scenes, if not loaded
 			foreach (string sceneName in sceneSO.additionnalSceneNames)
@@ -63,29 +82,6 @@ namespace EyapLibrary.SceneManagement
 			}
 
 			return true;
-		}
-
-		/// <summary>
-		/// Called when the scene is switched.
-		/// </summary>
-		/// <param name="operation">The async operation that loaded the scene.</param>
-		protected void OnMainSceneSwitch(SceneSO sceneSO, bool isColdStartup = false)
-		{
-			SceneSO previousSceneSO = CurrentlyLoadedScene;
-			CurrentlyLoadedScene = sceneSO;
-			if (!isColdStartup)
-			{
-				SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneSO.sceneName));
-			}
-
-			if (previousSceneSO != null)
-			{
-				UnloadPreviouScenes(CurrentlyLoadedScene, previousSceneSO, OnPreviousScenesUnloaded);
-			}
-			else
-			{
-				CurrentlySwitchingScene = false;
-			}
 		}
 
 		/// <summary>
@@ -110,16 +106,16 @@ namespace EyapLibrary.SceneManagement
 				throw new ArgumentException("SceneLoader: No scene with that name.");
 			}
 
-			if (!currentSceneSO.additionnalSceneNames.Contains(previousSceneSO.sceneName))
-			{
-				SceneLoader.UnloadScene(previousSceneSO.sceneName, sceneUnloadedCallback);
-			}
 			foreach (string oldSceneName in previousSceneSO.additionnalSceneNames)
 			{
 				if (oldSceneName != currentSceneSO.sceneName && !currentSceneSO.additionnalSceneNames.Contains(oldSceneName))
 				{
 					SceneLoader.UnloadScene(oldSceneName);
 				}
+			}
+			if (!currentSceneSO.additionnalSceneNames.Contains(previousSceneSO.sceneName))
+			{
+				SceneLoader.UnloadScene(previousSceneSO.sceneName, sceneUnloadedCallback);
 			}
 		}
 
@@ -128,6 +124,26 @@ namespace EyapLibrary.SceneManagement
 		/// </summary>
 		protected void OnPreviousScenesUnloaded()
 		{
+			SceneLoader.LoadScene(_nextSceneSO.sceneName, OnSceneSwitchEnd);
+		}
+
+		/// <summary>
+		/// Called when the scene is switched.
+		/// </summary>
+		/// <param name="operation">The async operation that loaded the scene.</param>
+		protected void OnSceneSwitchEnd()
+		{
+			SceneSO previousSceneSO = CurrentlyLoadedScene;
+			CurrentlyLoadedScene = _nextSceneSO;
+			if (!_isColdStartup)
+			{
+				SceneManager.SetActiveScene(SceneManager.GetSceneByName(CurrentlyLoadedScene.sceneName));
+			}
+
+			if (_transitionScene != null && _transitionScene.isLoaded)
+			{
+				SceneManager.UnloadSceneAsync(_transitionScene);
+			}
 			CurrentlySwitchingScene = false;
 		}
 	}
