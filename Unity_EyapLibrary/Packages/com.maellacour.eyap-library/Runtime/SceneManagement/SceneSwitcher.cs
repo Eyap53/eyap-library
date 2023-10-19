@@ -62,7 +62,7 @@ namespace EyapLibrary.SceneManagement
 			_nextSceneSO = sceneSO;
 			_isColdStartup = isColdStartup;
 
-			if (CurrentlyLoadedScene != null)
+			if (CurrentlyLoadedScene != null && !isColdStartup)
 			{
 				_transitionScene = SceneManager.CreateScene(SceneTransitionLabel);
 				SceneManager.SetActiveScene(_transitionScene);
@@ -71,24 +71,6 @@ namespace EyapLibrary.SceneManagement
 			else
 			{
 				OnPreviousScenesUnloaded();
-			}
-
-			// if (!isColdStartup)
-			// {
-			// 	SceneLoader.LoadScene(sceneSO.sceneName, () => OnMainSceneSwitch(sceneSO));
-			// }
-			// else
-			// {
-			// 	OnMainSceneSwitch(sceneSO, isColdStartup);
-			// }
-
-			// Load additional scenes, if not loaded
-			foreach (string sceneName in sceneSO.additionnalSceneNames)
-			{
-				if (!SceneManager.GetSceneByName(sceneName).isLoaded)
-				{
-					SceneLoader.LoadScene(sceneName);
-				}
 			}
 
 			return true;
@@ -134,7 +116,24 @@ namespace EyapLibrary.SceneManagement
 		/// </summary>
 		protected void OnPreviousScenesUnloaded()
 		{
-			SceneLoader.LoadScene(_nextSceneSO.sceneName, OnSceneSwitchEnd);
+			if (!_isColdStartup)
+			{
+				SceneLoader.LoadScene(_nextSceneSO.sceneName, OnSceneSwitchEnd);
+			}
+
+			// Load additional scenes, if not loaded
+			foreach (string sceneName in _nextSceneSO.additionnalSceneNames)
+			{
+				if (!SceneManager.GetSceneByName(sceneName).isLoaded)
+				{
+					SceneLoader.LoadScene(sceneName);
+				}
+			}
+
+			if (_isColdStartup)
+			{
+				OnSceneSwitchEnd();
+			}
 		}
 
 		/// <summary>
