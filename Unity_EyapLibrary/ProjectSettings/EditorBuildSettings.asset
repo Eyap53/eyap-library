@@ -5,16 +5,16 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Packages/com.maellacour.eyaplibrary/Samples/SceneManagementDemo/Scenes/Initialization.unity
     guid: ba4a4e827792a3945921d531b5f978f0
-  - enabled: 1
+  - enabled: 0
     path: Packages/com.maellacour.eyaplibrary/Samples/SceneManagementDemo/Scenes/Main.unity
     guid: 2f6c7958461b98f41a2689450e433228
-  - enabled: 1
+  - enabled: 0
     path: Packages/com.maellacour.eyaplibrary/Samples/SceneManagementDemo/Scenes/Add1.unity
     guid: 15e80a6a79871fc4285e55e0bee8de15
-  - enabled: 1
+  - enabled: 0
     path: Packages/com.maellacour.eyaplibrary/Samples/SceneManagementDemo/Scenes/Test.unity
     guid: 2dc105fc660ad2042b27849ca06a3f8d
   m_configObjects:
